@@ -4,6 +4,7 @@ import pickle
 import gzip
 from matplotlib import pyplot
 import numpy as np
+import torch
 
 DATA_PATH = Path("data")
 PATH = DATA_PATH / "mnist"
@@ -37,3 +38,12 @@ with gzip.open((PATH / FILENAME).as_posix(), "rb") as f:
 
 pyplot.imshow(x_train[0].reshape((28, 28)), cmap="gray")
 print(x_train.shape)
+
+# 数据需要转换成tensor才能进行建模和训练
+x_train, y_train, x_valid, y_valid = map(
+    torch.tensor, (x_train, y_train, x_valid, y_valid)
+)
+n, c = x_train.shape
+print(x_train, y_train)
+print(x_train.shape)
+print(y_train.min(), y_train.max())
