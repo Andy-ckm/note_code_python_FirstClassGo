@@ -30,7 +30,7 @@ dates = [datetime.datetime.strptime(date, '%Y-%m-%d') for date in dates]
 # x = dates[:6]
 # print(x)
 '''
-画图，
+画图
 默认风格、设置布局、标签值，数据“昨天、前天...“
 '''
 plt.style.use('fivethirtyeight')
