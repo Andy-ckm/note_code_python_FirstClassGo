@@ -4,14 +4,15 @@ import matplotlib.pyplot as plt
 
 
 # 训练集文件
-train_images = 'data_mnist/mnist/MNIST/raw/train-images.idx3-ubyte'
+train_images = './data_mnist/train-images.idx3-ubyte'
 # 训练集标签文件
-train_labels = 'data_mnist/mnist/MNIST/raw/train-labels.idx1-ubyte'
+train_labels = './data_mnist/train-labels.idx1-ubyte'
 
 # 测试集文件
-test_images = 'data_mnist/mnist/MNIST/raw/t10k-images.idx3-ubyte'
+test_images = './data_mnist/t10k-images.idx3-ubyte'
 # 测试集标签文件
-test_labels = 'data_mnist/mnist/MNIST/raw/t10k-labels.idx1-ubyte'
+test_labels = './data_mnist/t10k-labels.idx1-ubyte'
+
 
 def decode_idx3_ubyte(idx3_ubyte_file):
     bin_data = open(idx3_ubyte_file, 'rb').read()
