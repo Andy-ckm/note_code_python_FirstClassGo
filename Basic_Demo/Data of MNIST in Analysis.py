@@ -18,6 +18,8 @@ def decode_idx3_ubyte(idx3_ubyte_file):
 
     offset = 0
     fmt_header = '>iiii'
+    # 指定的格式fmt，从偏移位置offset开始解包;
+    # 二进制数据,struct模块来完成打包和解包的工作
     magic_number, num_images, num_rows, num_cols = struct.unpack_from(fmt_header, bin_data, offset)
     print('魔数:%d, 图片数量: %d张, 图片大小: %d*%d' % (magic_number, num_images, num_rows, num_cols))
 
