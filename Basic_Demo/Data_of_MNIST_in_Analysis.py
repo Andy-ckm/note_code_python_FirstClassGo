@@ -77,11 +77,13 @@ def run():
     test_images_1 = load_test_images()
     test_labels_1 = load_test_labels()
 
-    return train_images_1, train_labels_1, test_images_1, test_labels_1
-'''
+    # return train_images_1, train_labels_1, test_images_1, test_labels_1
+
+
     # 查看前十个数据及其标签以读取是否正确
     for i in range(10):
-        print(train_labels_1[i])
+        print(train_labels_1[1].shape)
+        print(train_images_1[i].shape[:2])
         print("---------------------")
         print(test_images_1[i].shape[0:2])
         print(test_labels_1[i])
@@ -89,7 +91,7 @@ def run():
         plt.imshow(train_images_1[i], cmap='gray')
         plt.show()
     print('done')
-'''
+
 
 if __name__ == '__main__':
     run()
