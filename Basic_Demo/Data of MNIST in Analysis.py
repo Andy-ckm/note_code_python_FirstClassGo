@@ -35,7 +35,47 @@ def decode_idx3_ubyte(idx3_ubyte_file):
 
 def decode_idx1_ubyte(idx1_ubyte_file):
     bin_data = open(idx1_ubyte_file, 'rb').read()
+    # 解析文件头信息
     offset = 0
     fmt_header = '>ii'
     magic_number, num_images = struct.unpack_from(fmt_header, bin_data, offset)
     print('魔数:%d, 图片数量: %d张' % (magic_number, num_images))
+    # 解析数据集
+    offset += struct.calcsize(fmt_header)
+    fmt_image = '>B'
+    labels = np.empty(num_images)
+    for i in range(num_images):
+        if (i + 1) % 10000 == 0:
+            print('已解析 %d' % (i + 1) + '张')
+        labels[i] = struct.unpack_from(fmt_image, bin_data, offset)[0]
+        offset += struct.calcsize(fmt_image)
+    return labels
+
+def load_train_images(idx_ubyte_file=train_images):
+    return decode_idx3_ubyte(idx_ubyte_file)
+
+def load_train_labels(idx_ubyte_file=train_labels):
+    return decode_idx1_ubyte(idx_ubyte_file)
+
+def load_test_images(idx_ubyte_file=test_images):
+    return decode_idx3_ubyte(idx_ubyte_file)
+
+def load_test_labels(idx_ubyte_file=test_labels):
+    return decode_idx1_ubyte(idx_ubyte_file)
+
+def run():
+    train_images = load_train_images()
+    train_labels = load_train_labels()
+    test_images = load_test_images()
+    test_labels = load_test_labels()
+
+    # 查看前十个数据及其标签以读取是否正确
+    for i in range(10):
+        print(train_labels[i])
+        print(test_images[i].shape[0:2])
+        plt.imshow(train_images[i], cmap='gray')
+        plt.show()
+    print('done')
+
+if __name__ == '__main__':
+    run()
