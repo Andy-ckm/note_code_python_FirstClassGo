@@ -17,22 +17,23 @@ batch_size = 64
 
 # 训练集
 train_dataset = datasets.MNIST(root='./data_conv',
-                            train=True,
-                            transform=transforms.ToTensor(),
-                            download=False)
+                               train=True,
+                               transform=transforms.ToTensor(),
+                               download=False)
 
 # 测试集
 test_dataset = datasets.MNIST(root='./data_conv',
-                           train=False,
-                           transform=transforms.ToTensor())
+                              train=False,
+                              transform=transforms.ToTensor())
 
 # 构建batch数据
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=batch_size,
                                            shuffle=True)
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
-                                           batch_size=batch_size,
-                                           shuffle=True)
+                                          batch_size=batch_size,
+                                          shuffle=True)
+
 
 # 构建神经网络
 class CNN(nn.Module):
@@ -71,6 +72,7 @@ class CNN(nn.Module):
         x = x.view(x.size(0), -1)  # flatten操作，结果为：(batch_size, 32 * 6 * 6)
         output = self.out(x)
         return output
+
 
 def accuracy(predictions, labels):
     pred = torch.max(predictions.data, 1)[1]
