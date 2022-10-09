@@ -12,7 +12,7 @@ import numpy as np
 # 定义超参数
 input_size = 28
 num_classes = 10
-num_epochs = 3
+num_epochs = 10
 batch_size = 64
 
 # 训练集
@@ -42,33 +42,33 @@ class CNN(nn.Module):
             nn.Conv2d(
                 in_channels=1,  # 灰度图
                 out_channels=16,  # 要得到几多少个特征图
-                kernel_size=5,  # 卷积核大小
+                kernel_size=3,  # 卷积核大小
                 stride=1,  # 步长
                 padding=2,  # 如果希望卷积后大小跟原来一样，需要设置padding=(kernel_size-1)/2 if stride=1
-            ),  # 输出的特征图为 (16, 28, 28)
+            ),  # 输出的特征图为 (16, 30, 30)
             nn.ReLU(),  # relu层
-            nn.MaxPool2d(kernel_size=2),  # 进行池化操作（2x2 区域）, 输出结果为： (16, 14, 14)
+            nn.MaxPool2d(kernel_size=2),  # 进行池化操作（2x2 区域）, 输出结果为： (16, 15, 15)
         )
-        self.conv2 = nn.Sequential(  # 下一个套餐的输入 (16, 14, 14)
-            nn.Conv2d(16, 32, 5, 1, 2),  # 输出 (32, 14, 14)
+        self.conv2 = nn.Sequential(  # 下一个套餐的输入 (16, 15, 15)
+            nn.Conv2d(16, 32, 3, 1, 1),  # 输出 (32, 15, 15)
             nn.ReLU(),  # relu层
-            nn.Conv2d(32, 32, 5, 1, 2),
+            nn.Conv2d(32, 64, 3, 2, 1),  # (64,8,8)
             nn.ReLU(),
-            nn.MaxPool2d(2),  # 输出 (32, 7, 7)
+            nn.MaxPool2d(2),  # 输出 (64, 4, 4)
         )
 
-        self.conv3 = nn.Sequential(  # 下一个套餐的输入 (16, 14, 14)
-            nn.Conv2d(32, 64, 5, 1, 2),  # 输出 (32, 14, 14)
-            nn.ReLU(),  # 输出 (32, 7, 7)
+        self.conv3 = nn.Sequential(  # 下一个套餐的输入 (64, 4, 4)
+            nn.Conv2d(64, 64, 5, 1, 2),  # 输出 (64, 4, 4)
+            nn.ReLU(),  # 输出 (64, 4, 4)
         )
 
-        self.out = nn.Linear(64 * 7 * 7, 10)  # 全连接层得到的结果
+        self.out = nn.Linear(64 * 4 * 4, 10)  # 全连接层得到的结果
 
     def forward(self, x):
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.conv3(x)
-        x = x.view(x.size(0), -1)  # flatten操作，结果为：(batch_size, 32 * 7 * 7)
+        x = x.view(x.size(0), -1)  # flatten操作，结果为：(batch_size, 32 * 6 * 6)
         output = self.out(x)
         return output
 
