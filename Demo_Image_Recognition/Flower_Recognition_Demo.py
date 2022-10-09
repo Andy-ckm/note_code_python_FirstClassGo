@@ -27,6 +27,7 @@ valid_dir = data_dir + '/valid'
 data_transforms = {
     'train':
         transforms.Compose([
+            # H * W
             transforms.Resize([96, 96]),
             # 随机旋转，-45到45度之间随机选
             transforms.RandomRotation(45),
