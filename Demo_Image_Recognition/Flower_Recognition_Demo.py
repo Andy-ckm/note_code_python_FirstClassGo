@@ -174,3 +174,18 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filenam
 
                 # 清零
                 optimizer.zero_grad()
+                # 只有训练的时候计算和更新梯度
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                _, preds = torch.max(outputs, 1)
+                # 训练阶段更新权重
+                if phase == 'train':
+                    loss.backward()
+                    optimizer.step()
+
+                # 计算损失
+                running_loss += loss.item() * inputs.size(0)
+                # 判断预测结果最大的和真实值是否一致
+                running_corrects += torch.sum(preds == labels.data)
+
+
