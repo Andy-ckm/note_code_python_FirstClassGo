@@ -116,7 +116,7 @@ model_ft = model_ft.to(device)
 filename = 'checkpoint.path'
 
 # 是否训练所有层
-param_to_update = model_ft.parameters()
+params_to_update = model_ft.parameters()
 print("params to learn:")
 if feature_extract:
     params_to_update = []
@@ -128,3 +128,9 @@ else:
     for name, param in model_ft.named_parameters():
         if param.requires_grad == True:
             print("\t", name)
+
+# 优化器
+optimizer_ft = optim.Adam(params_to_update, lr=1e-2)
+scheduler = optim.lr_scheduler.StepLR(optimizer_ft, step_size=10, gamma=0.1)
+criterion = nn.CrossEntropyLoss()
+
