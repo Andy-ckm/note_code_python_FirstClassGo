@@ -99,5 +99,32 @@ def initialize_model(model_name, num_classes, feature_extract, use_pretrained=Tr
     set_parameter_requires_grad(model_ft, feature_extract)
 
     num_ftrs = model_ft.fc.in_features
-    # 类别数自己根据自己任务来
+    # 类别数
     model_ft.fc = nn.Linear(num_ftrs, 102)
+
+    # 根据配置
+    input_size = 64
+    return model_ft, input_size
+
+# 设置神经网络中需要训练的层
+models_ft, input_size = initialize_model(model_name, 102, feature_extract, use_pretrained=True)
+
+# GPU训练
+model_ft = model_ft.to(device)
+
+# 保存训练模型
+filename = 'checkpoint.path'
+
+# 是否训练所有层
+param_to_update = model_ft.parameters()
+print("params to learn:")
+if feature_extract:
+    params_to_update = []
+    for name, param in model_ft.named_parameters():
+        if param.requires_grad == True:
+            params_to_update.append(param)
+            print("\t", name)
+else:
+    for name, param in model_ft.named_parameters():
+        if param.requires_grad == True:
+            print("\t", name)
