@@ -134,3 +134,43 @@ optimizer_ft = optim.Adam(params_to_update, lr=1e-2)
 scheduler = optim.lr_scheduler.StepLR(optimizer_ft, step_size=10, gamma=0.1)
 criterion = nn.CrossEntropyLoss()
 
+# 训练模块
+def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filename='best.pt'):
+    # 计算时间
+    since = time.time()
+    # 记录最好的一次
+    best_acc = 0
+    #在GPU中训练模型
+    model.to(device)
+    # 训练过程中打印损失和指标
+    val_acc_history = []
+    train_acc_history = []
+    train_losses = []
+    valid_losses = []
+    # 学习率
+    LRs = [optimizer.param_groups[0]['lr']]
+    # 初始化模型
+    best_model_wts = copy.deepcopy(model.state_dict())
+    # 遍历
+    for epoch in range(num_epochs):
+        print('Epoch {}/{}'.format(epoch, num_epochs - 1))
+        print('-' * 10)
+
+        # 训练和验证
+        for phase in ['train', 'valid']:
+            if phase == 'train':
+                # 训练
+                model.train()
+            else:
+                # 验证
+                model.eval()
+            running_loss = 0.0
+            running_corrects = 0
+
+            # 将每个数据都取出来
+            for inputs, labels in dataloaders[phase]:
+                inputs = inputs.to(device)
+                labels = labels.to(device)
+
+                # 清零
+                optimizer.zero_grad()
