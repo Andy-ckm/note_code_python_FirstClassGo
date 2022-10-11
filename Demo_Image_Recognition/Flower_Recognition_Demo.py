@@ -187,5 +187,9 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filenam
                 running_loss += loss.item() * inputs.size(0)
                 # 判断预测结果最大的和真实值是否一致
                 running_corrects += torch.sum(preds == labels.data)
+            #算平均
+            epoch_loss = running_loss / len(dataloaders[phase].dataset)
+            epoch_acc = running_corrects.double() / len(dataloaders[phase].dataset)
+
 
 
