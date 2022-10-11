@@ -191,5 +191,6 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filenam
             epoch_loss = running_loss / len(dataloaders[phase].dataset)
             epoch_acc = running_corrects.double() / len(dataloaders[phase].dataset)
 
-
+            # 每epoch 需要的时间
+            time_elapsed = time.time() - since
 
