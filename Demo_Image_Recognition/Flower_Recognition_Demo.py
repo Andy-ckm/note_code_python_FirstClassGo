@@ -193,4 +193,5 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filenam
 
             # 每epoch 需要的时间
             time_elapsed = time.time() - since
+            print('Time elapsed {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
 
