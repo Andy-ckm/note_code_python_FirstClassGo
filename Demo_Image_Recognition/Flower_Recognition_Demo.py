@@ -197,4 +197,21 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filenam
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
 
             # 得到最好那次的模型
+            if phase == 'valid' and epoch_acc > best_acc:
+                best_acc = epoch_acc
+                best_model_wts = copy.deepcopy(model.state_dict())
+                state = {
+                    # 字典里key就是各层的名字，值就是训练好的权重
+                    'state_dict':model.state_dict(),
+                    'best_acc':best_acc,
+                    'optimizer':optimizer.state_dict()
+                }
+                torch.save(state, filename)
+            if phase == 'valid':
+                val_acc_history.append(epoch_acc)
+                valid_losses.append(epoch_loss)
+                # 学习率衰减
+            if phase == 'train':
+                train_acc_history.append(epoch_acc)
+                train_losses.append(epoch_loss)
 
