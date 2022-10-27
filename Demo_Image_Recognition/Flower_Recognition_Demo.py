@@ -211,7 +211,22 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filenam
                 val_acc_history.append(epoch_acc)
                 valid_losses.append(epoch_loss)
                 # 学习率衰减
+                scheduler.step(epoch_loss)
             if phase == 'train':
                 train_acc_history.append(epoch_acc)
                 train_losses.append(epoch_loss)
+        print('Optimizer learning rate : {:.7f}'.format(optimizer.param_groups[0]['lr']))
+        LRs.append(optimizer.para_groups[0]['lr'])
+        print()
+        # 学习衰减率
+        scheduler.step()
 
+    time_elapsed = time.time() - since
+    print('Training complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
+    print('Best val Acc: {:4f}'.format(best_acc))
+
+    # 练完后用最好的一次当做模型最终的结果,等着一会测试
+    model.load_state_dict(best_model_wts)
+    return model, val_acc_history, train_acc_history, valid_losses, train_losses, LRs
+
+model_ft, val_acc_history, train_acc_history, valid_losses, train_losses, LRs  = train_model(model_ft, dataloaders, criterion, optimizer_ft, num_epochs=20)
