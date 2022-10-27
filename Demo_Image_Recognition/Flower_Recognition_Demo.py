@@ -216,7 +216,7 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filenam
                 train_acc_history.append(epoch_acc)
                 train_losses.append(epoch_loss)
         print('Optimizer learning rate : {:.7f}'.format(optimizer.param_groups[0]['lr']))
-        LRs.append(optimizer.para_groups[0]['lr'])
+        LRs.append(optimizer.param_groups[0]['lr'])
         print()
         # 学习衰减率
         scheduler.step()
