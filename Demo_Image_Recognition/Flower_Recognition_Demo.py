@@ -256,7 +256,7 @@ model_ft, input_size = initialize_model(model_name, 102, feature_extract, use_pr
 model_ft = model_ft.to(device)
 
 # 保存文件的名字
-filename='best.pt'
+filename = 'best.pt'
 
 # 加载模型
 checkpoint = torch.load(filename)
@@ -275,3 +275,7 @@ else:
     output = model_ft(images)
 
 print(output.shape)
+_, preds_tensor = torch.max(output, 1)
+
+preds = np.squeeze(preds_tensor.numpy()) if not train_on_gpu else np.squeeze(preds_tensor.cpu().numpy())
+print(preds)
