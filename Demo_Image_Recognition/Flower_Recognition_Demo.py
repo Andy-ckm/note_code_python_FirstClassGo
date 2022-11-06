@@ -230,3 +230,14 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=25, filenam
     return model, val_acc_history, train_acc_history, valid_losses, train_losses, LRs
 
 model_ft, val_acc_history, train_acc_history, valid_losses, train_losses, LRs  = train_model(model_ft, dataloaders, criterion, optimizer_ft, num_epochs=20)
+
+for param in model_ft.parameters():
+    param.requires_grad = True
+
+# 再继续训练所有的参数，学习率调小一点
+optimizer = optim.Adam(model_ft.parameters(), lr=1e-3)
+scheduler = optim.lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+
+# 损失函数
+criterion = nn.CrossEntropyLoss()
+
