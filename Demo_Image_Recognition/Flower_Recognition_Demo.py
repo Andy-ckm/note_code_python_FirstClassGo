@@ -247,4 +247,5 @@ checkpoint = torch.load(filename)
 best_acc = checkpoint['best_acc']
 model_ft.load_state_dict(checkpoint['state_dict'])
 
-model_ft, val_acc_history, train_acc_history, valid_losses, train_losses, LRs  = train_model(model_ft, dataloaders, criterion, optimizer, num_epochs=10,
+model_ft, val_acc_history, train_acc_history, valid_losses, train_losses, LRs =\
+    train_model(model_ft, dataloaders, criterion, optimizer, num_epochs=10)
