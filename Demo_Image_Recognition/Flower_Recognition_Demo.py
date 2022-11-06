@@ -249,3 +249,29 @@ model_ft.load_state_dict(checkpoint['state_dict'])
 
 model_ft, val_acc_history, train_acc_history, valid_losses, train_losses, LRs =\
     train_model(model_ft, dataloaders, criterion, optimizer, num_epochs=10)
+
+model_ft, input_size = initialize_model(model_name, 102, feature_extract, use_pretrained=True)
+
+# GPU模式
+model_ft = model_ft.to(device)
+
+# 保存文件的名字
+filename='best.pt'
+
+# 加载模型
+checkpoint = torch.load(filename)
+best_acc = checkpoint['best_acc']
+model_ft.load_state_dict(checkpoint['state_dict'])
+
+# 得到一个batch的测试数据
+dataiter = iter(dataloaders['valid'])
+images, labels = dataiter.next()
+
+model_ft.eval()
+
+if train_on_gpu:
+    output = model_ft(images.cuda())
+else:
+    output = model_ft(images)
+
+print(output.shape)
