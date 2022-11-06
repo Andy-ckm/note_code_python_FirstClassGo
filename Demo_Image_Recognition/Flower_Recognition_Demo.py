@@ -241,3 +241,8 @@ scheduler = optim.lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 # 损失函数
 criterion = nn.CrossEntropyLoss()
 
+# 加载之前训练好的权重参数
+
+checkpoint = torch.load(filename)
+best_acc = checkpoint['best_acc']
+model_ft.load_state_dict(checkpoint['state_dict'])
